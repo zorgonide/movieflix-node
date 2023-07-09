@@ -10,15 +10,14 @@ export const createJWT = (user) => {
 };
 
 export const protect = (req, res, next) => {
-  // const bearer = req.headers.authorization;
-  const bearer = req.cookies.authToken;
-  console.log(bearer);
+  const bearer = req.headers.authorization;
+  // const bearer = req.cookies.authToken;
   // if (!bearer || !bearer.startsWith("Bearer ")) {
   if (!bearer) {
     return res.status(401).json({ message: "No token" });
   }
-  // const [_, token] = bearer.split(" ");
-  let token = bearer;
+  const [_, token] = bearer.split(" ");
+  // let token = bearer;
   if (!token) {
     return res.status(401).json({ message: "Not valid token" });
   }
@@ -33,9 +32,13 @@ export const protect = (req, res, next) => {
 };
 
 export const hashPassword = async (password) => {
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
-  return hashedPassword;
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    return hashedPassword;
+  } catch (err) {
+    throw new Error(err);
+  }
 };
 
 export const comparePassword = async (password, hashedPassword) => {

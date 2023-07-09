@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { body } from "express-validator";
-import { handleInputError } from "./modules/middlewares";
 import { getMovie } from "./handlers/movieHandler";
 import {
   createComment,
@@ -17,6 +16,7 @@ import {
   createWatchList,
   deleteWatchList,
   getWatchList,
+  isMovieWatched,
 } from "./handlers/watchlistHandler";
 
 const router = Router();
@@ -66,6 +66,7 @@ router.post(
 router.get("/watchlist/", getWatchList);
 router.delete("/watchlist/:movieId", deleteWatchList);
 router.post("/watchlist/:movieId", createWatchList);
+router.post("/watchlist/check/:movieId", isMovieWatched);
 
 router.use((err, req, res, next) => {
   console.log(err);

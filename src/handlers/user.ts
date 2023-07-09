@@ -32,28 +32,48 @@ export const signIn = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
     const token = createJWT(user);
-    res.cookie("authToken", token, { httpOnly: true });
+    res.cookie("authToken", token, {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+      domain: "netlify",
+    });
+    delete user.password;
+
     return res.json({ token, user });
   } catch (err) {
     return res.status(401).json({ message: "Invalid credentials" });
   }
 };
 export const updateUser = async (req, res, next) => {
+  const updateData = {};
+
+  if (req.body.email) {
+    updateData["email"] = req.body.email;
+  }
+  if (req.body.firstName) {
+    updateData["firstName"] = req.body.firstName;
+  }
+  if (req.body.lastName) {
+    updateData["lastName"] = req.body.lastName;
+  }
+  if (req.body.password) {
+    updateData["password"] = await hashPassword(req.body.password);
+  }
+  if (req.body.genres) {
+    updateData["genres"] = req.body.genres;
+  }
   try {
     const user = await prisma.user.update({
       where: {
-        id: req.body.id,
+        id: req.user.id,
       },
-      data: {
-        email: req.body.email,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        password: await hashPassword(req.body.password),
-        genres: req.body.genres,
-      },
+      data: updateData,
     });
     const token = createJWT(user);
-    res.json({ token });
+    delete user.password;
+    res.json({ token, user });
   } catch (err) {
     err.type = "input";
     next(err);
