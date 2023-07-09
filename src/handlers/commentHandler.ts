@@ -2,10 +2,17 @@ import prisma from "../db";
 
 export const getComments = async (req, res, next) => {
   try {
-    const comments = await prisma.comment.findMany({
+    let comments = await prisma.comment.findMany({
       where: {
         movieId: +req.params.movieId,
       },
+      include: {
+        user: true,
+      },
+    });
+    comments = comments.map((comment) => {
+      delete comment.user.password;
+      return comment;
     });
     res.status(200).json({ data: comments });
   } catch (err) {

@@ -43,3 +43,23 @@ export const createWatchList = async (req, res, next) => {
     next(err);
   }
 };
+export const isMovieWatched = async (req, res, next) => {
+  try {
+    const watchlist = await prisma.watchList.findUnique({
+      where: {
+        userId_movieId: {
+          userId: req.user.id,
+          movieId: +req.params.movieId,
+        },
+      },
+    });
+    if (watchlist) {
+      res.status(200).json({ data: true });
+    } else {
+      res.status(200).json({ data: false });
+    }
+  } catch (err) {
+    err.type = "input";
+    next(err);
+  }
+};
