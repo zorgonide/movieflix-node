@@ -31,7 +31,6 @@ export const createRating = async (req, res, next) => {
         },
       },
     });
-    console.log(findExistingRating);
     if (findExistingRating) {
       req.id = findExistingRating.id;
       return updateRating(req, res, next);
