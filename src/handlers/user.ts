@@ -32,7 +32,7 @@ export const signIn = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
     const token = createJWT(user);
-    return res.json({ token, role: user.role });
+    return res.json({ token, user });
   } catch (err) {
     return res.status(401).json({ message: "Invalid credentials" });
   }
