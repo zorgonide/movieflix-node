@@ -2,6 +2,8 @@
 
 This API provides endpoints to manage movie ratings, comments, and watchlists. It allows users to rate movies, leave comments, and add movies to their watchlists.
 
+## [Postman Documentation](https://documenter.getpostman.com/view/11815460/2s93zH2K7A)
+
 ## Installation
 
 1. Clone the repository: `git clone <repository_url>`
