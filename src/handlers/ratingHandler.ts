@@ -23,16 +23,31 @@ export const getRating = async (req, res, next) => {
 
 export const createRating = async (req, res, next) => {
   try {
-    const rating = await prisma.rating.create({
-      data: {
-        movieId: +req.params.movieId,
-        userId: req.user.id,
-        userRating: req.body.userRating,
+    const findExistingRating = await prisma.rating.findUnique({
+      where: {
+        userId_movieId: {
+          userId: req.user.id,
+          movieId: +req.params.movieId,
+        },
       },
     });
-    res.status(200).json({ data: rating });
+    console.log(findExistingRating);
+    if (findExistingRating) {
+      req.id = findExistingRating.id;
+      return updateRating(req, res, next);
+    } else {
+      const rating = await prisma.rating.create({
+        data: {
+          movieId: +req.params.movieId,
+          userId: req.user.id,
+          userRating: req.body.userRating,
+        },
+      });
+      res.status(200).json({ data: rating });
+    }
   } catch (err) {
-    res.status(400).json({ data: "Already rated" });
+    err.type = "input";
+    next(err);
   }
 };
 
@@ -40,7 +55,10 @@ export const updateRating = async (req, res, next) => {
   try {
     const rating = await prisma.rating.update({
       where: {
-        id: req.user.id,
+        userId_movieId: {
+          userId: req.user.id,
+          movieId: +req.params.movieId,
+        },
       },
       data: {
         userRating: req.body.userRating,
