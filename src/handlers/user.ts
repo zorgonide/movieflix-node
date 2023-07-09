@@ -32,6 +32,7 @@ export const signIn = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
     const token = createJWT(user);
+    res.cookie("authToken", token, { httpOnly: true });
     return res.json({ token, user });
   } catch (err) {
     return res.status(401).json({ message: "Invalid credentials" });

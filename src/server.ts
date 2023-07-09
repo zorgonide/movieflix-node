@@ -5,9 +5,12 @@ import cors from "cors";
 import { protect } from "./modules/auth";
 import { createUser, getUser, signIn, updateUser } from "./handlers/user";
 const app = express();
+const cookieParser = require("cookie-parser");
 
 app.use(cors());
 app.use(morgan("dev"));
+app.use(cookieParser());
+
 app.use(express.json()); //parse json body
 app.use(express.urlencoded({ extended: true })); //parse urlencoded body
 app.get("/", (req, res, next) => {

@@ -10,11 +10,15 @@ export const createJWT = (user) => {
 };
 
 export const protect = (req, res, next) => {
-  const bearer = req.headers.authorization;
-  if (!bearer || !bearer.startsWith("Bearer ")) {
+  // const bearer = req.headers.authorization;
+  const bearer = req.cookies.authToken;
+  console.log(bearer);
+  // if (!bearer || !bearer.startsWith("Bearer ")) {
+  if (!bearer) {
     return res.status(401).json({ message: "No token" });
   }
-  const [_, token] = bearer.split(" ");
+  // const [_, token] = bearer.split(" ");
+  let token = bearer;
   if (!token) {
     return res.status(401).json({ message: "Not valid token" });
   }
