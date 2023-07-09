@@ -56,7 +56,6 @@ export const deleteComment = async (req, res, next) => {
     });
     res.status(200).json({ data: "deleted" });
   } catch (err) {
-    err.type = "input";
-    next(err);
+    res.status(400).json({ data: "no such comment" });
   }
 };
