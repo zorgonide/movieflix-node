@@ -84,12 +84,10 @@ export const getUser = async (req, res, next) => {
   try {
     const user = await prisma.user.findUnique({
       where: {
-        id: req.body.id,
+        id: req.user.id,
       },
     });
-    if (!user) {
-      createUser(req, res, next);
-    } else res.status(200).json(user);
+    res.status(200).json(user);
   } catch (err) {
     err.type = "input";
     next(err);

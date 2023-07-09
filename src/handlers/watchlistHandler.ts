@@ -6,6 +6,9 @@ export const getWatchList = async (req, res, next) => {
       where: {
         userId: req.user.id,
       },
+      include: {
+        movie: true,
+      },
     });
     res.status(200).json({ data: watchlist });
   } catch (err) {
