@@ -13,12 +13,15 @@ This API provides endpoints to manage movie ratings, comments, and watchlists. I
 
 - Node.js
 - PostgreSQL or any other supported database (configured in the Prisma schema).
-- There should be a `.env` file in project root folder, with `DATABASE_URL` and `JWT_SECRET` defined. I used [render](https://render.com/) to set up a free postgreSQL db.
+- There should be a `.env` file in the project root folder, with `DATABASE_URL` and `JWT_SECRET` defined. I used [render](https://render.com/) to set up a free PostgreSQL db.
 
 ## Configuration
 
-1. Copy the `.env.example` file and rename it to `.env`.
-2. Update the `.env` file with your database connection details and other environment variables.
+1. Update the `.env` file with your database connection details and other environment variables.
+2.  ```
+     DATABASE_URL="postgres://xxxxxxxxx"  
+     JWT_SECRET = "2RXuR@xxxxxxxx"
+    ```
 
 ## Database Setup
 
@@ -53,9 +56,9 @@ The server will be running on `http://localhost:3000`.
 
 ### Rating
 
-- `GET /rating/:movieId`: Get ratings for a movie.
+- `GET /rating/:movieId`: Get ratings for a movie (Returns the average rating for a movie across all users).
 - `PUT /rating`: Update a rating.
-- `POST /rating/:movieId`: Create a new rating.
+- `POST /rating/:movieId`: Create a new rating (Modifies an existing rating if the user resubmits the rating).
 
 ### Watchlist
 
@@ -79,7 +82,6 @@ This project is licensed under the [MIT License](LICENSE).
 
 - [Prisma](https://www.prisma.io/): Used as the database ORM.
 - [Express](https://expressjs.com/): Used as the web framework.
-- [Validator.js](https://validatorjs.com/): Used for request validation.
 - [bcrypt](https://www.npmjs.com/package/bcrypt): Used for password hashing.
 - [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken): Used for authentication and authorization.
 - [dotenv](https://www.npmjs.com/package/dotenv): Used for environment variable management.
