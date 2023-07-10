@@ -52,7 +52,7 @@ The server will be running on `http://localhost:3000`.
 
 - `GET /comment/:movieId`: Get comments for a movie.
 - `POST /comment`: Create a new comment.
-- `PUT /comment`: Update a comment.
+- `PUT /comment/:movieId`: Update a comment.
 - `DELETE /comment/:id`: Delete a comment.
 
 ### Rating
