@@ -93,3 +93,38 @@ export const getUser = async (req, res, next) => {
     next(err);
   }
 };
+export const getAllUsers = async (req, res, next) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const users = await prisma.user.findMany({
+      where: {
+        NOT: {
+          id: req.user.id,
+        },
+      },
+    });
+    res.status(200).json(users);
+  } catch (err) {
+    err.type = "input";
+    next(err);
+  }
+};
+
+export const deleteUser = async (req, res, next) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const user = await prisma.user.delete({
+      where: {
+        id: req.body.id,
+      },
+    });
+    res.status(200).json({ data: user });
+  } catch (err) {
+    err.type = "input";
+    next(err);
+  }
+};

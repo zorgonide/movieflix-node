@@ -35,3 +35,12 @@ export const createMovie = async (req, res, next) => {
     next(err);
   }
 };
+export const getAllUsers = async (req, res, next) => {
+  try {
+    const users = await prisma.user.findMany();
+    res.status(200).json(users);
+  } catch (err) {
+    err.type = "input";
+    next(err);
+  }
+};

@@ -3,7 +3,14 @@ import router from "./router";
 import morgan from "morgan";
 import cors from "cors";
 import { protect } from "./modules/auth";
-import { createUser, getUser, signIn, updateUser } from "./handlers/user";
+import {
+  createUser,
+  deleteUser,
+  getAllUsers,
+  getUser,
+  signIn,
+  updateUser,
+} from "./handlers/user";
 const app = express();
 const cookieParser = require("cookie-parser");
 
@@ -22,7 +29,8 @@ app.post("/signin", signIn);
 app.post("/user", createUser);
 app.put("/user", protect, updateUser);
 app.get("/user", protect, getUser);
-
+app.get("/users", protect, getAllUsers);
+app.delete("/user", protect, deleteUser);
 app.use((err, req, res, next) => {
   if (err.type === "auth") {
     return res.status(401).json({ message: "unauthorized" + err.message });
