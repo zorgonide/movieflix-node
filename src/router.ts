@@ -38,14 +38,12 @@ router.post(
 
 router.get("/comment/:movieId", getComments);
 router.post(
-  "/comment/",
-  body("movieId").exists(),
+  "/comment/:movieId",
   body("comment").exists().isString(),
-  body("userId").exists().isString(),
   createComment
 );
 router.put(
-  "/comment/",
+  "/comment/:movieId",
   body("comment").exists().isString(),
   body("id").exists().isString(),
   updateComment
@@ -54,7 +52,7 @@ router.delete("/comment/:id", deleteComment);
 
 // Ratings
 router.get("/rating/:movieId", getRating);
-router.put("/rating/", updateRating);
+router.put("/rating/:movieId", updateRating);
 router.post(
   "/rating/:movieId",
   body("userRating").exists().isNumeric(),

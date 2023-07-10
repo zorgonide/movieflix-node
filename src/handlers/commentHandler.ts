@@ -25,7 +25,7 @@ export const createComment = async (req, res, next) => {
   try {
     const comment = await prisma.comment.create({
       data: {
-        movieId: +req.body.movieId,
+        movieId: +req.params.movieId,
         userId: req.user.id,
         comment: req.body.comment,
       },
